@@ -74,8 +74,4 @@
 		<PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="9.0.6" />
 	</ItemGroup>
 
-	<ItemGroup>
-	  <ProjectReference Include="../RentalApp.Database/RentalApp.Database.csproj" />
-	</ItemGroup>
-
 </Project>
