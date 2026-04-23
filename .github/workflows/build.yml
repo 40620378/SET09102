@@ -5,7 +5,22 @@
  jobs:
    build:
 
-     runs-on: windows-latest
+     runs-on: ubuntu-latest
+
+     services:
+       postgres:
+         image: postgres:16
+         env:
+           POSTGRES_USER: test_user
+           POSTGRES_PASSWORD: test_password
+           POSTGRES_DB: testdb
+         options: >-
+           --health-cmd pg_isready
+           --health-interval 10s
+           --health-timeout 5s
+           --health-retries 5
+         ports:
+           - 5432:5432
 
      steps:
      - name: Checkout code
@@ -17,4 +32,22 @@
          dotnet-version: 9.0
 
      - name: Restore workloads
-       run: dotnet workload restore /workspace/RentalApp/RentalApp.csproj
+       run: dotnet workload restore ${{ vars.CSPROJ_PATH }}
+
+     - name: Restore dependencies
+       run: dotnet restore ${{ vars.CSPROJ_PATH }}
+
+     - name: Build project
+       env: 
+         ConnectionStrings__TestConnection: ${{ secrets.TestConnection_CONNECTION_STRING }}
+       run: dotnet build <Path to your Notes.csproj> --framework net9.0
+
+     - name: Test
+       env: 
+         ConnectionStrings__TestConnection: ${{ secrets.TestConnection_CONNECTION_STRING }}
+       run: dotnet test <Path to your notes.sln> --framework net9.0
+
+
+
+
+

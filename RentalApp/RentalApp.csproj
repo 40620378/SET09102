@@ -74,4 +74,6 @@
 		<PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="9.0.6" />
 	</ItemGroup>
 
+	<Target Name="_StartAdbServer" />
+
 </Project>
